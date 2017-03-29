@@ -1,6 +1,6 @@
 # Author: Amir Fischer
 # Date: 29/3/2017
-# App to shut down computer when idle for more than 90 minutes
+# App to shut down computer when idle for more than a configurable time.
 
 # v2.0
 # First call for idle time is suspended to avoid going into shutdown because long idle time (sleep)
