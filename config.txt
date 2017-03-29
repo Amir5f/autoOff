@@ -1,0 +1,2 @@
+Max Idle Time: 60
+Verbose: True
