@@ -46,6 +46,7 @@ class LASTINPUTINFO(Structure):
 
 # Opens notepad and prints a message about shutdown and then exists it without saving.
 def alert_shutdown():
+
     delay = 50
 
     # Open Notepad and inform
@@ -54,23 +55,33 @@ def alert_shutdown():
     app.Notepad.Edit.TypeKeys("Computer was not touched for ", with_spaces=True)
     app.Notepad.Edit.TypeKeys(MAX_TIME, with_spaces=True)
     app.Notepad.Edit.TypeKeys(" minutes and will shutdown in ", with_spaces=True)
-    app.Notepad.Edit.TypeKeys(WAIT, with_spaces=True)
-    app.Notepad.Edit.TypeKeys("minutes.", with_spaces=True)
+    app.Notepad.Edit.TypeKeys(int(WAIT/60), with_spaces=True)
+    app.Notepad.Edit.TypeKeys(" minutes.", with_spaces=True)
 
     # How to prevent the shutdown
     app.Notepad.TypeKeys("{ENTER}")
     app.Notepad.Edit.TypeKeys("Note: to prevent shutdown move the mouse in the next ", with_spaces=True)
-    app.Notepad.Edit.TypeKeys(WAIT, with_spaces=True)
-    app.Notepad.Edit.TypeKeys("minutes.", with_spaces=True)
+    app.Notepad.Edit.TypeKeys(int(WAIT/60), with_spaces=True)
+    app.Notepad.Edit.TypeKeys(" minutes.", with_spaces=True)
 
     # Delay/chance to prevent shutdown
-    time.sleep(WAIT)
+    for i in range(0, 100, 1):
+        time.sleep(WAIT/100)
+        # Repeatedly check if mouse was moved, for a certain timeframe
+        if time_since_last_use() < MAX_TIME:
+            break
 
     # If the shutdown was prevented
     if time_since_last_use() < MAX_TIME:
         app.Notepad.TypeKeys("{ENTER}")
-        app.Notepad.Edit.TypeKeys("OK, your'e still here...")
-        time.sleep(4)
+        app.Notepad.Edit.TypeKeys("OK, your'e still here...", with_spaces=True)
+
+        # Log the interruption
+        timeStamp = get_time()
+        msg = timeStamp + "\t shutdown was prevented"
+        log(msg)
+
+        time.sleep(3)
         app.Notepad.MenuSelect("File -> Exit -> Don't Save")
         app.Notepad.TypeKeys("{TAB}{SPACE}")
 
@@ -93,6 +104,7 @@ def alert_shutdown():
 
 # Logs the current time and sends the computer to shut down
 def initiate_shutdown():
+
     timeStamp = get_time()
     msg = timeStamp + "\t shutdown"
     log(msg)
@@ -109,6 +121,7 @@ def click(x,y):
 
 
 def gui_shutdown():
+
     click(20, 1030)  # Click start button
     time.sleep(1)
     click(20, 980)  # Click Power button
@@ -119,6 +132,8 @@ def gui_shutdown():
 # Reads the configuration file and determines the allowed idle time
 # If the config file is missing - default value is set
 def config_time():
+
+    global MAX_TIME
 
     try:
         config_file = open("config.txt", "r")
@@ -140,6 +155,8 @@ def config_time():
 # Reads the configuration file and determines the logging level that is specified.
 # If the config file is missing - regular debugging is done
 def config_debug():
+
+    global DEBUG_MODE
 
     try:
         config_file = open("config.txt", "r")
@@ -182,14 +199,12 @@ def log_idle_check(time_idle):
 # Performs the idleness check and prints res only to terminal
 def idleness_check():
     idle_time = 0
-    print("Debug mode: False")
 
     while idle_time < MAX_TIME:
         idle_time = round(time_since_last_use(), 2)
         print("idle for " + str(idle_time) + " minutes")
 
         time.sleep(INTERVALS)
-        continue
 
     alert_shutdown()
     initiate_shutdown()
@@ -198,7 +213,6 @@ def idleness_check():
 # Performs the idleness check and prints res to terminal and to log (verbose)
 def idleness_check_debug():
     idle_time = 0
-    print("Debug mode: True")
 
     while idle_time < MAX_TIME:
         idle_time = round(time_since_last_use(), 2)
@@ -206,7 +220,6 @@ def idleness_check_debug():
         log_idle_check(str(idle_time))
 
         time.sleep(INTERVALS)
-        continue
 
     alert_shutdown()
     initiate_shutdown()
@@ -214,11 +227,14 @@ def idleness_check_debug():
 
 def main():
 
+    config_debug()
     config_time()
+
+    print("Debug mode: ", DEBUG_MODE)
     print("Max idle time configured: ", MAX_TIME)
 
     # Delay run to avoid going into shutdown process because the computer responds as idle on the time it was off
-    time.sleep(INTERVALS)
+    time.sleep(INTERVALS/10)
 
     if DEBUG_MODE:
         idleness_check_debug()
