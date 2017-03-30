@@ -1,15 +1,17 @@
-# Author: Amir Fischer
-# Date: 29/3/2017
-# App to shut down computer when idle for more than 90 minutes
-# v2.0
-# First call for idle time is suspended to avoid going into shutdown because long idle time (sleep)
-# Prevent shutdown is based on moving the mouse during the alert time, not killing the task
-# Added gui shutdown in case command didn't work
-# v1.2
-# Note: config.txt:
-# enter a value in the field 'Max Idle Time:' to control the idle time
-# enter True or False in the field 'Verbose:' to control the logging level
-# Note: prevent shutdown process by killing (in task manager) app called autoOff.exe
+"""
+Author: Amir Fischer
+Date: 29/3/2017
+App to shut down computer when idle for more than 90 minutes
+v2.0
+First call for idle time is suspended to avoid going into shutdown because long idle time (sleep)
+Prevent shutdown is based on moving the mouse during the alert time, not killing the task
+Added gui shutdown in case command didn't work
+v1.2
+Note: config.txt:
+enter a value in the field 'Max Idle Time:' to control the idle time
+enter True or False in the field 'Verbose:' to control the logging level
+Note: prevent shutdown process by killing (in task manager) app called autoOff.exe
+"""
 
 import os
 import pywinauto
@@ -18,9 +20,9 @@ import win32api
 import win32con
 from ctypes import Structure, windll, c_uint, sizeof, byref
 
-MAX_TIME = 90        # 90 minutes
-INTERVALS = 10*60            # 10 minutes
-WAIT = 5*60                  # 5 minutes
+MAX_TIME = 90               # 90 minutes
+INTERVALS = 10*60           # 10 minutes
+WAIT = 5*60                 # 5 minutes
 
 DEBUG_MODE = False
 
@@ -44,9 +46,9 @@ class LASTINPUTINFO(Structure):
 
 # Opens notepad and prints a message about shutdown and then exists it without saving.
 def alert_shutdown():
-    delay = 100
+    delay = 50
 
-    # Inform
+    # Open Notepad and inform
     app = pywinauto.Application().start(r"c:\Windows\System32\notepad.exe")
 
     app.Notepad.Edit.TypeKeys("Computer was not touched for ", with_spaces=True)
@@ -55,7 +57,7 @@ def alert_shutdown():
     app.Notepad.Edit.TypeKeys(WAIT, with_spaces=True)
     app.Notepad.Edit.TypeKeys("minutes.", with_spaces=True)
 
-    # Note
+    # How to prevent the shutdown
     app.Notepad.TypeKeys("{ENTER}")
     app.Notepad.Edit.TypeKeys("Note: to prevent shutdown move the mouse in the next ", with_spaces=True)
     app.Notepad.Edit.TypeKeys(WAIT, with_spaces=True)
@@ -63,6 +65,7 @@ def alert_shutdown():
 
     # Delay/chance to prevent shutdown
     time.sleep(WAIT)
+
     # If the shutdown was prevented
     if time_since_last_use() < MAX_TIME:
         app.Notepad.TypeKeys("{ENTER}")
@@ -73,9 +76,9 @@ def alert_shutdown():
 
         # go back to monitoring idleness
         if DEBUG_MODE:
-            idleness_check_debug(MAX_TIME)
+            idleness_check_debug()
         else:
-            idleness_check(MAX_TIME)
+            idleness_check()
 
     # If the shutdown was not prevented
     else:
@@ -106,11 +109,11 @@ def click(x,y):
 
 
 def gui_shutdown():
-    click(20, 1030)
+    click(20, 1030)  # Click start button
     time.sleep(1)
-    click(20, 980)
+    click(20, 980)  # Click Power button
     time.sleep(1)
-    # click(20, 930)
+    click(20, 930)  # Click Shut down button
 
 
 # Reads the configuration file and determines the allowed idle time
@@ -188,6 +191,9 @@ def idleness_check():
         time.sleep(INTERVALS)
         continue
 
+    alert_shutdown()
+    initiate_shutdown()
+
 
 # Performs the idleness check and prints res to terminal and to log (verbose)
 def idleness_check_debug():
@@ -203,7 +209,6 @@ def idleness_check_debug():
         continue
 
     alert_shutdown()
-
     initiate_shutdown()
 
 

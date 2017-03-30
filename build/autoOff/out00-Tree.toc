@@ -1,0 +1,5 @@
+('c:\\python34\\lib\\site-packages\\pywinauto-0.5.4-py3.4.egg',
+ None,
+ {'*.pyo', '*.pyd', '*.pyc', '*.py', '*.so', 'EGG-INFO'},
+ 'DATA',
+ [])

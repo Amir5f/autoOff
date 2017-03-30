@@ -1,0 +1,29 @@
+missing module named resource - imported by posix, C:\Users\Amir Fischer\IdeaProjects\python\autoOff\autoOff.py
+missing module named posix - imported by os, C:\Users\Amir Fischer\IdeaProjects\python\autoOff\autoOff.py
+missing module named _posixsubprocess - imported by subprocess, multiprocessing.util, C:\Users\Amir Fischer\IdeaProjects\python\autoOff\autoOff.py
+missing module named 'org.python' - imported by pickle, C:\Users\Amir Fischer\IdeaProjects\python\autoOff\autoOff.py, xml.sax
+missing module named readline - imported by cmd, code, pdb, C:\Users\Amir Fischer\IdeaProjects\python\autoOff\autoOff.py
+excluded module named _frozen_importlib - imported by importlib, C:\Users\Amir Fischer\IdeaProjects\python\autoOff\autoOff.py
+missing module named _scproxy - imported by urllib.request
+missing module named java - imported by platform, C:\Users\Amir Fischer\IdeaProjects\python\autoOff\autoOff.py
+missing module named 'java.lang' - imported by platform, C:\Users\Amir Fischer\IdeaProjects\python\autoOff\autoOff.py, xml.sax._exceptions
+missing module named vms_lib - imported by platform, C:\Users\Amir Fischer\IdeaProjects\python\autoOff\autoOff.py
+missing module named termios - imported by tty, C:\Users\Amir Fischer\IdeaProjects\python\autoOff\autoOff.py, getpass
+missing module named grp - imported by tarfile, shutil, C:\Users\Amir Fischer\IdeaProjects\python\autoOff\autoOff.py
+missing module named pwd - imported by posixpath, tarfile, shutil, http.server, webbrowser, C:\Users\Amir Fischer\IdeaProjects\python\autoOff\autoOff.py, getpass
+missing module named ce - imported by os, C:\Users\Amir Fischer\IdeaProjects\python\autoOff\autoOff.py
+missing module named org - imported by copy, C:\Users\Amir Fischer\IdeaProjects\python\autoOff\autoOff.py
+missing module named _dummy_threading - imported by dummy_threading, C:\Users\Amir Fischer\IdeaProjects\python\autoOff\autoOff.py
+missing module named PIL - imported by pywinauto.controls.HwndWrapper
+missing module named logger - imported by pywinauto.actionlogger
+missing module named multiprocessing.get_start_method - imported by multiprocessing, multiprocessing.spawn
+missing module named multiprocessing.set_start_method - imported by multiprocessing, multiprocessing.spawn
+missing module named multiprocessing.get_context - imported by multiprocessing, multiprocessing.pool, multiprocessing.managers, multiprocessing.sharedctypes
+missing module named multiprocessing.TimeoutError - imported by multiprocessing, multiprocessing.pool
+missing module named multiprocessing.BufferTooShort - imported by multiprocessing, multiprocessing.connection
+missing module named multiprocessing.AuthenticationError - imported by multiprocessing, multiprocessing.connection
+missing module named 'PIL.Image' - imported by pywinauto.XMLHelpers
+missing module named cElementTree - imported by pywinauto.XMLHelpers
+missing module named elementtree - imported by pywinauto.XMLHelpers
+missing module named extra_tests - imported by pywinauto.tests
+missing module named StringIO - imported by pywinauto.six
